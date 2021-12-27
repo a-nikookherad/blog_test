@@ -16,3 +16,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+/*----------------------- authentication routes ------------------------*/
+Route::group([
+    "namespace" => "App\Http\Controllers\Authentication",
+], function () {
+    Route::get("login", "AuthController@login")
+        ->name("login");
+    Route::post("login", "AuthController@attempt")
+        ->name("login.post");
+    Route::get("logout", "AuthController@logout")
+        ->name("logout");
+});
+
+/*----------------------- posts routes ------------------------*/
+Route::group([
+    "namespace" => "App\Http\Controllers\Posts",
+    "middleware" => "auth:web"
+], function () {
+    Route::resource("posts", "PostController");
+});
